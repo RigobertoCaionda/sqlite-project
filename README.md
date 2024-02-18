@@ -1,4 +1,4 @@
-# TODO APP Backend
+# SQLITE PROJECT APP Backend
 This project is aimed at creating a simple sqlite node.js project, just to show how simple it is to create an sqlite database, you doesn't need to create a database server when you'are using sqlite database and you can comibine sqlite with some ORMs like Sequelize, typeORM and others that support sqlite database. 
 Att: This project is totally focused on sqlite database implementation and that's why i didn't care about other things like clean code, project patterns, etc.
 
