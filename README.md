@@ -35,6 +35,19 @@ http://localhost:3000
 
 ```
 
+## Estrutura do Projeto
+This the folder structure of this project:
+- `src/`: It has the main source code of the application.
+- `models/`: Stores the data models used by the application.
+- `controllers/`: Contains the controllers responsible for handling HTTP requests.
+- `routes/`: Define the application API routes.
+Important files:
+- `database.js`: Database configuration file.
+- `app.js`: The main file of the application.
+- `Usuario.js`: User Model.
+- `UsuarioController.js`: User Controller.
+- `routes.js`: API routes definition.
+
 ## Code Example:
 
 This is the database.js file, in this file we configured sequelize and created the connection with database using sqlite database:
