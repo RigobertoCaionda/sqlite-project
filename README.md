@@ -1,10 +1,10 @@
 # SQLITE PROJECT APP Backend
-This project is aimed at creating a simple sqlite node.js project, just to show how simple it is to create an sqlite database, you doesn't need to create a database server when you'are using sqlite database and you can comibine sqlite with some ORMs like Sequelize, typeORM and others that support sqlite database. 
-Att: This project is totally focused on sqlite database implementation and that's why i didn't care about other things like clean code, project patterns, etc.
+This project is aimed at creating a simple sqlite node.js project, just to show how simple it is to create an sqlite database, you doesn't need to create a database server when you'are using sqlite database and you can comibine sqlite with some ORMs like Sequelize, typeORM and others that support sqlite database. WHen you want a simple configuration database or you doesn't need a very complete database, in those cases you may want to use sqlite database.
+Att: This project is totally focused on sqlite database implementation and that's why i didn't care about other things like clean code, project patterns, etc. But although i encourage you to use the best software practices in your projects, it's very important to use good practices while developing your softwares...
 
 ##  Prerequisites
 
-- Node.js
+- Node.js (https://nodejs.org/en/learn/getting-started/introduction-to-nodejs)
 - npm or Yarn
 
 ## Installation
@@ -49,7 +49,7 @@ const sequelize = new Sequelize({
 module.exports = sequelize;
 
 
-this is the User Model file called Usuario.js:
+This is the User Model file called Usuario.js:
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../database");
 
@@ -69,9 +69,77 @@ const Usuario = sequelize.define("Usuario", {
 
 module.exports = Usuario;
 
+This is the User controller and here you can see how we can combine sequelize and sqlite:
+const Usuario = require("../models/Usuario");
+
+module.exports = {
+
+  async index(req, res) {
+    try {
+      const usuarios = await Usuario.findAll();
+      return res.json(usuarios);
+    } catch (error) {
+      return res.status(500).json({ error: "Erro ao consultar usuários." });
+    }
+  },
+
+  async store(req, res) {
+    const { nome, idade } = req.body;
+    if (!nome || !idade) {
+      return res.status(400).json({ error: "Nome e idade são obrigatórios." });
+    }
+
+    try {
+      const usuario = await Usuario.create({ nome, idade });
+      return res.json(usuario);
+    } catch (error) {
+      return res.status(500).json({ error: "Erro ao inserir usuário." });
+    }
+  },
+
+  async update(req, res) {
+    const { id } = req.params;
+    const { nome, idade } = req.body;
+    if (!nome || !idade) {
+      return res.status(400).json({ error: "Nome e idade são obrigatórios." });
+    }
+
+    try {
+      const usuario = await Usuario.findByPk(id);
+      if (!usuario) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+
+      usuario.nome = nome;
+      usuario.idade = idade;
+      await usuario.save();
+
+      return res.json(usuario);
+    } catch (error) {
+      return res.status(500).json({ error: "Erro ao atualizar usuário." });
+    }
+  },
+
+  async destroy(req, res) {
+    const { id } = req.params;
+
+    try {
+      const usuario = await Usuario.findByPk(id);
+      if (!usuario) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+
+      await usuario.destroy();
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).json({ error: "Erro ao remover usuário." });
+    }
+  },
+};
+
 
 ## Credits
 This project was developed by Rigoberto Caionda.
 
 ## Contact
-If you have any questions or suggestions, please contact via email rigobertocaionda98@gmail.com.
+If you have any questions or suggestions, please contact via email rigobertocaionda98@gmail.com or via my github page https://github.com/RigobertoCaionda
